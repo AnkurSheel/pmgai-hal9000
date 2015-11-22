@@ -7,6 +7,8 @@ import vispy                    # Main application support.
 
 import window                   # Terminal input and display.
 
+from datetime import datetime
+
 
 class HAL9000(object):
     
@@ -36,10 +38,11 @@ class HAL9000(object):
 
         elif evt.text.startswith('relocate'):
             previous_location = self.location;
-            self.location = evt.text[9:];
-            self.terminal.log('', align='center', color='#404040')
-            self.terminal.log('\u2014 Leaving {}. \u2014'.format(previous_location), align='center', color='#404040')
-            self.terminal.log('\u2014 Now in the {}. \u2014'.format(self.location), align='center', color='#404040')
+            if previous_location != self.location:
+                self.location = evt.text[9:];
+                self.terminal.log('', align='center', color='#404040')
+                self.terminal.log('\u2014 Leaving {}. \u2014'.format(previous_location), align='center', color='#404040')
+                self.terminal.log('\u2014 Now in the {}. \u2014'.format(self.location), align='center', color='#404040')
             
         else:
             self.terminal.log('Command `{}` unknown.'.format(evt.text), align='left', color='#ff3000')    
