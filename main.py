@@ -1,4 +1,4 @@
-#
+﻿#
 # This file is part of The Principles of Modern Game AI.
 # Copyright (c) 2015, AiGameDev.com KG.
 #
@@ -15,12 +15,19 @@ class HAL9000(object):
         """
         self.terminal = terminal
         self.location = 'unknown'
+        self.first_time = True;
 
     def on_input(self, evt):
         """Called when user types anything in the terminal, connected via event.
         """
-        self.terminal.log("Good morning! This is HAL.", align='right', color='#00805A')
-
+        if evt.text == "Where am I":
+            self.terminal.log('\u2014 Current Location: {}. \u2014'.format(self.location), align='right', color='#404040')
+        elif self.first_time == True:
+           self.terminal.log("Greetings! I am HAL.", align='right', color='#00805A')
+           self.first_time = False
+        else:
+            self.terminal.log("Hello", align='right', color='#00805A')
+            
     def on_command(self, evt):
         """Called when user types a command starting with `/` also done via events.
         """
@@ -28,9 +35,12 @@ class HAL9000(object):
             vispy.app.quit()
 
         elif evt.text.startswith('relocate'):
+            previous_location = self.location;
+            self.location = evt.text[9:];
             self.terminal.log('', align='center', color='#404040')
-            self.terminal.log('\u2014 Now in the {}. \u2014'.format(evt.text[9:]), align='center', color='#404040')
-
+            self.terminal.log('\u2014 Leaving {}. \u2014'.format(previous_location), align='center', color='#404040')
+            self.terminal.log('\u2014 Now in the {}. \u2014'.format(self.location), align='center', color='#404040')
+            
         else:
             self.terminal.log('Command `{}` unknown.'.format(evt.text), align='left', color='#ff3000')    
             self.terminal.log("I'm afraid I can't do that.", align='right', color='#00805A')
