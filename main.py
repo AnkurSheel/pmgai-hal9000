@@ -37,12 +37,14 @@ class HAL9000(object):
             vispy.app.quit()
 
         elif evt.text.startswith('relocate'):
-            previous_location = self.location;
-            if previous_location != self.location:
-                self.location = evt.text[9:];
+            new_location = evt.text[9:];
+            if new_location != self.location:
                 self.terminal.log('', align='center', color='#404040')
-                self.terminal.log('\u2014 Leaving {}. \u2014'.format(previous_location), align='center', color='#404040')
-                self.terminal.log('\u2014 Now in the {}. \u2014'.format(self.location), align='center', color='#404040')
+                self.terminal.log('\u2014 Leaving {}. \u2014'.format(self.location), align='center', color='#404040')
+                self.terminal.log('\u2014 Now in the {}. \u2014'.format(new_location), align='center', color='#404040')
+                self.location = new_location;
+            else:
+                self.terminal.log('\u2014 You are already in {}. \u2014'.format(new_location), align='center', color='#404040')
             
         else:
             self.terminal.log('Command `{}` unknown.'.format(evt.text), align='left', color='#ff3000')    
